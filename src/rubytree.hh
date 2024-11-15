@@ -33,6 +33,7 @@ public:
     void insert(const T& value);
     void remove(const T& value);
     Node search(const T& value) const;
+    size_t getSize() const;
 };
 
 template <typename T>
@@ -372,6 +373,18 @@ typename RubyTree<T>::Node RubyTree<T>::search(const T& value) const {
     return node;
 }
 
-
+template <typename T>
+size_t RubyTree<T>::getSize() const {
+    size_t size = 0;
+    auto countNodes = [&size](const Node& node) {
+        if (node) {
+            ++size;
+            countNodes(node->left);
+            countNodes(node->right);
+        }
+    };
+    countNodes(root);  // 从根节点开始计算
+    return size;
+}
 
 #endif // !_RUBYTREE_HH_
